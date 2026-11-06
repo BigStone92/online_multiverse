@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "Sansa Quiet UI";
+  src: url("/fonts/SansaQuietUI-Core.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --bg-deep: #181c17;
   --bg-forest: #20251f;
@@ -11,8 +19,8 @@
   --accent-gold: #d4b475;
   --accent-gold-bright: #e7c98c;
   --accent-jade: #6eb893;
-  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Pretendard", sans-serif;
-  --font-serif: "Nanum Myeongjo", "Noto Serif KR", Georgia, serif;
+  --font-sans: "Sansa Quiet UI", -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Pretendard", sans-serif;
+  --font-serif: "Sansa Quiet UI", "Nanum Myeongjo", "Noto Serif KR", Georgia, serif;
 }
 
 *,

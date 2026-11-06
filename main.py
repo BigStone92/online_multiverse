@@ -210,10 +210,10 @@ class TempleRoom:
             {"cushion": 2, "pose": "kneel", "x": -3.6, "z": -6.5, "yaw": math.pi, "bow": True},
             {"cushion": 5, "pose": "kneel", "x": 3.6, "z": -6.5, "yaw": math.pi, "bow": False},
             {"cushion": 9, "pose": "beads", "x": -1.2, "z": -9.0, "yaw": math.pi, "bow": False},
-            # Garden visitors (by lotus pond, bench, cafe25)
-            {"cushion": 102, "pose": "kneel", "x": -7.5, "z": 16.0, "yaw": 1.2, "bow": False},
+            # Garden visitors (by lotus pond bench, strolling path, cafe25 bench)
+            {"cushion": 100, "pose": "kneel", "x": -7.5, "z": 10.0, "yaw": 0.4, "bow": False},
             {"cushion": None, "pose": "walk", "x": 5.2, "z": 19.5, "yaw": -0.6, "bow": False},
-            {"cushion": 105, "pose": "beads", "x": 8.0, "z": 14.0, "yaw": -1.5, "bow": False},
+            {"cushion": 102, "pose": "beads", "x": 7.5, "z": 10.5, "yaw": -0.5, "bow": False},
         ]
         t = now_ms()
         for i in range(count):
@@ -387,7 +387,36 @@ async def serve_index() -> FileResponse:
 
 @app.get("/favicon.ico")
 async def serve_favicon() -> Response:
+    ico = STATIC_DIR / "favicon.ico"
+    if ico.exists():
+        return FileResponse(ico)
     return Response(status_code=204)
+
+
+@app.get("/favicon.svg")
+async def serve_favicon_svg() -> Response:
+    svg = STATIC_DIR / "favicon.svg"
+    if svg.exists():
+        return FileResponse(svg, media_type="image/svg+xml")
+    return Response(status_code=204)
+
+
+@app.get("/icon-192.png")
+async def serve_icon_192() -> Response:
+    png = STATIC_DIR / "icon-192.png"
+    if png.exists():
+        return FileResponse(png, media_type="image/png")
+    return Response(status_code=204)
+
+
+@app.get("/v/{version}/assets/{file_path:path}")
+async def serve_versioned_asset(version: str, file_path: str) -> Response:
+    _ = version
+    target = (STATIC_DIR / "assets" / file_path).resolve()
+    assets_root = (STATIC_DIR / "assets").resolve()
+    if str(target).startswith(str(assets_root)) and target.is_file():
+        return FileResponse(target)
+    return Response(status_code=404)
 
 
 @app.get("/manifest.webmanifest")
@@ -603,6 +632,12 @@ async def presence_endpoint(websocket: WebSocket) -> None:
         await WORLD.broadcast_delta(room, [], meta={"room": room.id, "removed": [self_id]})
 
 
+ASSETS_DIR = STATIC_DIR / "assets"
+FONTS_DIR = STATIC_DIR / "fonts"
+ASSETS_DIR.mkdir(parents=True, exist_ok=True)
+FONTS_DIR.mkdir(parents=True, exist_ok=True)
+app.mount("/assets", StaticFiles(directory=str(ASSETS_DIR)), name="assets")
+app.mount("/fonts", StaticFiles(directory=str(FONTS_DIR)), name="fonts")
 app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
 

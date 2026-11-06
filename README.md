@@ -87,7 +87,15 @@ flowchart TB
 * [`main.py`](file:///Users/bigstone/My_SideProject/Online_Multiverse/main.py): FastAPI 멀티룸(`maru` ~ `maru-100`, 방당 정원 `100`명) 서버, `/presence` WebSocket 엔드포인트, `SNSD`(`0x534E5344`) 28B 헤더 + 30/38B 바이너리 델타 패킷 인코더/디코더 및 `--self-check` 검증기.
 * [`static/presence-worker.js`](file:///Users/bigstone/My_SideProject/Online_Multiverse/static/presence-worker.js): 지수 백오프 재연결 및 Zero-copy `Transferable` `ArrayBuffer` 브릿지 워커.
 * [`static/index.html`](file:///Users/bigstone/My_SideProject/Online_Multiverse/static/index.html) & [`static/style.css`](file:///Users/bigstone/My_SideProject/Online_Multiverse/static/style.css): Apple HIG 모바일 퍼스트 Thumb-Zone 하단 수행 바, $\ge 44\text{pt}$ 터치 타깃, `<dialog closedby="any">` 바텀 시트 모달(100개 서버 선택, CAFE25, 복전함 `1,000` 단위 콤마 포맷팅).
-* [`static/app.js`](file:///Users/bigstone/My_SideProject/Online_Multiverse/static/app.js): **Three.js r180** 기반 마당(`garden`: 청연당 외관, 연꽃 연못, 사찰 고양이 공양이, CAFE25, 벤치) 및 법당(`hall`: 아미타삼존불, 향로 연기 파티클, 복전함, 24좌복) 3D 공간, 6대 수행(합장, `4.8초` 절 사이클, 108염주 캔버스, 108 BPM 목탁, 헌향, CAFE25 무소유/풀소유 25배 속도 `1.2x` 버프/배달 엽서), **Web Audio API 절차적 사운드 합성기(`SoundEngine`)**, 적응형 프레임 페이서(`60/30/15 FPS`), 멀티 탭 `BroadcastChannel` 락.
+* [`static/app.js`](file:///Users/bigstone/My_SideProject/Online_Multiverse/static/app.js): **Three.js r180 + `GLTFLoader` + `MeshoptDecoder` + `SkeletonUtils`** 기반 3D 렌더링 엔진.
+  - **6종의 실제 스컬프팅 `.glb` 3D 모델(`EXT_meshopt_compression` & `KHR_mesh_quantization`)**:
+    - 동자승 아바타([`static/assets/monk.glb`](file:///Users/bigstone/My_SideProject/Online_Multiverse/static/assets/monk.glb)): 17개 본(`hips`, `spine`, `chest`, `neck`, `head`, `upper_arm.L/R`, `forearm.L/R`, `hand.L/R`, `thigh.L/R`, `shin.L/R`, `foot.L/R`) + 2-Bone IK 합장/절 솔버 + 4종 승복 주름 모프 타깃(`restingFold`, `prayerCloth`, `bowCloth`, `kneelingCover`) 구동.
+    - 고려 금동 아미타삼존불([`buddha.glb`](file:///Users/bigstone/My_SideProject/Online_Multiverse/static/assets/models/buddha.glb), [`mahastamaprapta.glb`](file:///Users/bigstone/My_SideProject/Online_Multiverse/static/assets/models/mahastamaprapta.glb), [`avalokitesvara.glb`](file:///Users/bigstone/My_SideProject/Online_Multiverse/static/assets/models/avalokitesvara.glb)): 국립중앙박물관 스캔 금동불 메쉬 + 연화대좌(`LatheGeometry`).
+    - 한국 소나무([`pine.glb`](file:///Users/bigstone/My_SideProject/Online_Multiverse/static/assets/models/pine.glb)) 및 애니메이션 사찰 고양이 '공양이'([`gongyang-cat.glb`](file:///Users/bigstone/My_SideProject/Online_Multiverse/static/assets/cafe25-v5/gongyang-cat.glb)).
+  - **7종 3채널 PBR 재질 세트(`color.jpg` / `normal.jpg` / `roughness.jpg`) 및 IBL 환경 반사맵**:
+    - `wood`, `stone`, `plaster`, `roof`, `cloth`, `ground`, `rock` PBR 노멀/러프니스 매핑.
+    - [`woodland.jpg`](file:///Users/bigstone/My_SideProject/Online_Multiverse/static/assets/environment/woodland.jpg) Equirectangular IBL 환경 반사맵, 후불탱화([`altar-wall-calm-20261102.jpg`](file:///Users/bigstone/My_SideProject/Online_Multiverse/static/assets/altar-wall-calm-20261102.jpg)), CAFE25 설강화 원화([`snowdrop-artwork.webp`](file:///Users/bigstone/My_SideProject/Online_Multiverse/static/assets/cafe25-v12/snowdrop-artwork.webp)).
+  - **6대 수행 & 절차적 사운드**: 합장, `4.8초` 절 사이클, 108염주 캔버스, 108 BPM 목탁, 헌향, CAFE25(무소유/풀소유 25배 속도 `1.2x` 버프/배달 엽서), **Web Audio API 절차적 사운드 합성기(`SoundEngine`)**, 적응형 프레임 페이서(`60/30/15 FPS`), 멀티 탭 `BroadcastChannel` 락.
 
 ### 4.2 서버 실행 및 자체 검증 명령어
 ```bash
