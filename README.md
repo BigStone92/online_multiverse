@@ -114,9 +114,11 @@ flowchart TB
 # 또는
 ./.venv/bin/python main.py 8860
 ```
-* **원본 100% 3D 엔진 접속**: `http://localhost:8860/`
-* **모듈형 클린 3D 엔진 접속**: `http://localhost:8860/clean`
-* **상태 확인 API**: `GET http://localhost:8860/api/health`, `GET http://localhost:8860/api/rooms?roomLimit=20`
+* **GitHub 원격 저장소**: [https://github.com/BigStone92/online_multiverse](https://github.com/BigStone92/online_multiverse)
+* **웹 접속 (맥미니 프로덕션)**: `http://macmini:8860/`
+* **웹 접속 (로컬 개발)**: `http://localhost:8860/`
+* **모듈형 클린 3D 엔진 접속**: `http://macmini:8860/clean`
+* **상태 확인 API**: `GET http://macmini:8860/api/health`, `GET http://macmini:8860/api/rooms?roomLimit=20`
 
 ---
 
