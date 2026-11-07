@@ -3,7 +3,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js";
 import * as SkeletonUtils from "three/addons/utils/SkeletonUtils.js";
 
-const SNSD_MAGIC = 0x534e5344; // "SNSD" (1397642035)
+const SNSD_MAGIC = 0x534e5333; // "SNS3" (1397642035)
 const INDEX_TO_POSE = ["walk", "kneel", "beads", "dance"];
 const BOW_CYCLE_MS = 4800;
 const BOW_REST_MS = 400;
@@ -84,13 +84,13 @@ function setupDialogs() {
 function decodeSnsdDelta(buffer) {
   if (!(buffer instanceof ArrayBuffer) || buffer.byteLength < 28) return null;
   const view = new DataView(buffer);
-  const magic = view.getUint32(0, true);
+  const magic = view.getUint32(0);
   if (magic !== SNSD_MAGIC) return null;
 
-  const jsonByteLength = view.getUint32(4, true);
-  const recordCount = view.getUint32(8, true);
-  const revision = view.getFloat64(12, true);
-  const serverTime = view.getFloat64(20, true);
+  const jsonByteLength = view.getUint32(4);
+  const recordCount = view.getUint16(8);
+  const revision = view.getFloat64(12);
+  const serverTime = view.getFloat64(20);
 
   let offset = 28;
   let meta = {};
@@ -107,18 +107,18 @@ function decodeSnsdDelta(buffer) {
   const records = [];
   for (let i = 0; i < recordCount; i++) {
     if (offset + 30 > buffer.byteLength) break;
-    const seat = view.getUint16(offset, true);
-    const cushionRaw = view.getInt16(offset + 2, true);
+    const seat = view.getUint16(offset);
+    const cushionRaw = view.getInt16(offset + 2);
     const poseIdx = view.getUint8(offset + 4);
     const hasBow = view.getUint8(offset + 5);
-    const x = view.getFloat64(offset + 6, true);
-    const z = view.getFloat64(offset + 14, true);
-    const yaw = view.getFloat64(offset + 22, true);
+    const x = view.getFloat64(offset + 6);
+    const z = view.getFloat64(offset + 14);
+    const yaw = view.getFloat64(offset + 22);
     offset += 30;
 
     let bowAt;
     if (hasBow === 1 && offset + 8 <= buffer.byteLength) {
-      bowAt = view.getFloat64(offset, true);
+      bowAt = view.getFloat64(offset);
       offset += 8;
     }
 
@@ -1870,7 +1870,11 @@ class SansaApp {
       if (Number.isFinite(data.serverTime)) {
         this.clockOffset = Date.now() - data.serverTime;
       }
-      this.incenseQueue = Array.isArray(data.incenseQueue) ? data.incenseQueue : [];
+      this.incenseQueue = Array.isArray(data.incenseQueue)
+        ? data.incenseQueue
+        : Array.isArray(data.incenseQueue?.members)
+          ? data.incenseQueue.members
+          : [];
 
       this.visitors.clear();
       this.seatToId.clear();
@@ -1884,9 +1888,14 @@ class SansaApp {
         bounds: { minX: -56, maxX: 56, minZ: -40, maxZ: 64 },
         requestId: 1,
       });
+    } else if (data.type === "incense-queue" && Array.isArray(data.queue?.members)) {
+      this.incenseQueue = data.queue.members;
+      this.syncRoomHUD();
     } else if (data.type === "cafe25-state") {
-      this.sharedCoffees = Array.isArray(data.shared) ? data.shared : [];
-      document.getElementById("shared-coffee-count").textContent = fmtNum(this.sharedCoffees.length);
+      if (Array.isArray(data.shared)) {
+        this.sharedCoffees = data.shared;
+        document.getElementById("shared-coffee-count").textContent = fmtNum(this.sharedCoffees.length);
+      }
     } else if (data.type === "cafe25-claimed" && data.coffee) {
       this.sound.bell(false);
       this.showToast(`☕ ${data.coffee.fromName}님이 내려둔 커피를 마셨습니다: "${data.coffee.message}"`);

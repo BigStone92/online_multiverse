@@ -1,361 +1,66 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#20251f" id="theme-color-meta" />
-  <title>산사, 잠깐 쉬어가요 — Online Multiverse</title>
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" sizes="any" />
-  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-  <link rel="manifest" href="/manifest.webmanifest" />
-  <link rel="preload" href="/fonts/SansaQuietUI-Core.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/static/style.css" />
-  <script type="importmap">
-    {
-      "imports": {
-        "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
-        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
-      }
-    }
-  </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#24251f">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="산사">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="description" content="말없이 같이 앉아 있는 온라인 절, 산사.">
+<title>산사, 잠깐 쉬어가요</title>
+<link rel="canonical" href="https://sansatemple.com/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="산사">
+<meta property="og:title" content="산사, 잠깐 쉬어가요">
+<meta property="og:description" content="말없이 같이 앉아 있는 온라인 절.">
+<meta property="og:url" content="https://sansatemple.com/">
+<meta property="og:image" content="https://sansatemple.com/og/sansa-rest-20261101-v11.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="정면으로 합장하는 동자승과 초록 산·흰 법당 로고. 산사, 잠깐 쉬어가요.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="산사, 잠깐 쉬어가요">
+<meta name="twitter:description" content="말없이 같이 앉아 있는 온라인 절.">
+<meta name="twitter:image" content="https://sansatemple.com/og/sansa-rest-20261101-v11.png">
+<meta name="twitter:image:alt" content="정면으로 합장하는 동자승과 초록 산·흰 법당 로고. 산사, 잠깐 쉬어가요.">
+<link rel="icon" type="image/x-icon" href="/favicon.ico?v=4c79780808f4" sizes="16x16 32x32 48x48">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg?v=4c79780808f4" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=4c79780808f4">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=ccfba25ef8c5">
+<link rel="manifest" href="/manifest.webmanifest?v=ccfba25ef8c5">
+<link rel="preload" href="/fonts/SansaQuietUI-Core.woff2?v=4441c5d5ed84" as="font" type="font/woff2" crossorigin>
+<style>
+  .sansa-boot { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:14px; padding:24px; background:#eeece3; color:#4d5144; font-family:"Sansa Quiet UI",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",sans-serif; text-align:center; }
+  .sansa-boot-mark { display:flex; margin-bottom:6px; color:#8a8068; }
+  .sansa-boot-mark svg { width:32px; height:32px; stroke-width:1; }
+  .sansa-boot h1 { margin:0; padding-left:5px; font-size:27px; font-weight:500; letter-spacing:5px; }
+  .sansa-boot p { margin:0; max-width:100%; color:#838677; font-size:12px; line-height:1.7; }
+  .sansa-boot-dot { width:4px; height:4px; margin-top:18px; background:#a99a7b; border-radius:50%; animation:boot-breathe 1.8s ease-in-out infinite; }
+  .sansa-boot-retry { position:absolute; bottom:max(24px,env(safe-area-inset-bottom)); display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:0 16px; color:#64664f; font-size:13px; text-decoration:underline; text-underline-offset:3px; visibility:hidden; animation:boot-retry 0s 15s forwards; }
+  .sansa-boot-retry:focus-visible { outline:2px solid #988762; outline-offset:4px; }
+  .sansa-boot.is-error h1 { padding:0; font-size:21px; letter-spacing:0; }
+  .sansa-boot.is-error .sansa-boot-dot { display:none; }
+  .sansa-boot.is-error .sansa-boot-retry { position:static; visibility:visible; animation:none; }
+  @keyframes boot-breathe { 50% { opacity:.25; } }
+  @keyframes boot-retry { to { visibility:visible; } }
+  @media(prefers-reduced-motion:reduce) { .sansa-boot-dot { animation:none; } }
+</style>
+  <script type="module" crossorigin src="/assets/index-WD0X2Kzt.js"></script>
 </head>
 <body>
-  <div id="app"
-       data-space="garden"
-       data-world-cache="refresh"
-       data-world-cache-meshes="224"
-       data-world-cache-regions="54"
-       data-presence-transport="worker">
-
-    <!-- 1. 3D WebGL 캔버스 -->
-    <canvas id="scene-canvas" class="scene" data-engine="three.js r180"></canvas>
-
-    <!-- 2. 멀티 탭 렌더 일시 중지 배너 (BroadcastChannel) -->
-    <div id="render-paused-banner" class="render-paused-banner" hidden>
-      <div class="paused-card glass-surface">
-        <p class="paused-title">다른 산사 탭이 활성화되어 이 탭의 화면 그리기를 잠시 멈췄습니다.</p>
-        <button type="button" id="resume-render-btn" class="pill-btn primary">여기서 계속 머물기</button>
-      </div>
-    </div>
-
-    <!-- 3. 인트로 진입 화면 (#entry) -->
-    <section id="entry" class="entry-overlay" aria-labelledby="entry-title">
-      <div class="entry-card glass-surface">
-        <span class="entry-eyebrow">말없이 같이 앉아 있는 온라인 절</span>
-        <h1 id="entry-title" class="entry-title">산사, 잠깐 쉬어가요</h1>
-        <p class="entry-desc">
-          대화와 알림을 잠시 내려놓고, 동자승이 되어 마당을 거닐거나 법당 좌복에 앉아<br />
-          절하기 · 108염주 · 목탁 · 차 한 잔의 여백을 함께 나눕니다.
-        </p>
-        <div class="entry-stats" id="entry-live-stats">마루 1 서버 · 고요히 머무는 중</div>
-        <button type="button" id="enter-btn" class="enter-cta-btn" autofocus>
-          산사로 들어가기
-        </button>
-      </div>
-    </section>
-
-    <!-- 4. 108염주 인터랙티브 오버레이 (#beads-host) -->
-    <aside id="beads-host" class="practice-overlay beads-host glass-surface" aria-label="108염주 돌리기" hidden>
-      <div class="overlay-header">
-        <div>
-          <span class="overlay-kicker">수행 · 키 2 / 아래로 드래그 · 스페이스</span>
-          <h2 class="overlay-title">108염주 돌리기</h2>
-        </div>
-        <button type="button" id="beads-close-btn" class="icon-btn" aria-label="염주 닫기">✕</button>
-      </div>
-      <canvas id="beads-canvas" class="sansa-beads-canvas" width="220" height="320"></canvas>
-      <div class="overlay-stats">
-        <span id="beads-overlay-count">0 / 108알</span>
-        <span class="dot-sep">·</span>
-        <span id="beads-overlay-rounds">108염주 0바퀴</span>
-      </div>
-      <button type="button" id="beads-pull-btn" class="pill-btn primary full-width">
-        염주 한 알 넘기기 (Space)
-      </button>
-    </aside>
-
-    <!-- 5. 목탁 인터랙티브 오버레이 (#moktak-host) -->
-    <aside id="moktak-host" class="practice-overlay moktak-host glass-surface" aria-label="목탁 두드리기" hidden>
-      <div class="overlay-header">
-        <div>
-          <span class="overlay-kicker">수행 · 키 5 / 터치 타격</span>
-          <h2 class="overlay-title">목탁 두드리기</h2>
-        </div>
-        <button type="button" id="moktak-close-btn" class="icon-btn" aria-label="목탁 닫기">✕</button>
-      </div>
-      <canvas id="moktak-canvas" class="sansa-moktak-canvas" width="220" height="200"></canvas>
-      <div class="moktak-actions">
-        <button type="button" id="moktak-hit-btn" class="pill-btn primary">목탁 치기 (탁)</button>
-        <button type="button" id="moktak-auto-btn" class="pill-btn" aria-pressed="false">108 BPM 자동</button>
-      </div>
-    </aside>
-
-    <!-- 6. 상/하단 HUD 오버레이 -->
-    <div class="hud">
-      <!-- 상단 헤더 바 -->
-      <header class="hud-top">
-        <div class="hud-top-left">
-          <button type="button" id="visitor-counter" class="pill-btn glass-surface" aria-label="서버 목록 열기">
-            <span class="status-dot" id="conn-dot"></span>
-            <span id="room-label">마루 1</span>
-            <span class="dot-sep">·</span>
-            <span id="visitor-count-label">7명 머무는 중</span>
-          </button>
-          <div class="self-badge glass-surface" id="self-name-badge" title="나의 산사 법명">
-            동자승 · <strong id="self-name-text">고요한 바람</strong>
-          </div>
-          <div id="buff-pill" class="buff-pill glass-surface" hidden>
-            ☕ 풀소유 온기 · 속도 1.2x (<span id="buff-timer">05:00</span>)
-          </div>
-        </div>
-
-        <div class="hud-top-center">
-          <div class="practice-counters glass-surface">
-            <span id="bow-counter">절 <strong>0</strong>배</span>
-            <span class="dot-sep">·</span>
-            <span id="beads-counter">염주 <strong>0</strong>알 (<strong id="beads-round-inline">0</strong>바퀴)</span>
-            <span class="dot-sep" id="bow25-sep" hidden>·</span>
-            <span id="bow25-counter" class="accent-text" hidden>풀소유 25배: <strong>0 / 25</strong></span>
-          </div>
-          <div id="toast-banner" class="toast-banner glass-surface" role="status" aria-live="polite" hidden></div>
-        </div>
-
-        <div class="hud-top-right">
-          <button type="button" id="space-toggle" class="pill-btn glass-surface primary-outline">
-            🏯 법당 들어가기
-          </button>
-          <button type="button" id="audio-ambient" class="pill-btn glass-surface" aria-pressed="true" title="산사 바람 및 산새 소리">
-            🍃 바람음 켜짐
-          </button>
-          <button type="button" id="audio-chant" class="pill-btn glass-surface" aria-pressed="false" title="염불 및 독경 소리 (매일 05:00·18:00 합동 염불)">
-            📿 염불 꺼짐
-          </button>
-          <button type="button" id="audio-effects" class="pill-btn glass-surface" aria-pressed="true" title="범종·염주·목탁 효과음">
-            🔔 효과음 켜짐
-          </button>
-          <button type="button" id="cafe25-open" class="pill-btn glass-surface">
-            ☕ CAFE25
-          </button>
-          <button type="button" id="support-open" class="pill-btn glass-surface">
-            🪷 복전함
-          </button>
-          <button type="button" id="artwork-open" class="pill-btn glass-surface" aria-label="산사 안내 및 설강화 감상">
-            📖 안내
-          </button>
-        </div>
-      </header>
-
-      <!-- 하단 컨텍스트 액션 + 플로팅 아일랜드 바 (Apple HIG Thumb Zone) -->
-      <div class="hud-bottom">
-        <div class="context-bar">
-          <button type="button" id="incense-offer-btn" class="pill-btn glass-surface">
-            🕯️ 불단 향 올리기 <span id="incense-queue-badge" class="badge-inline">대기 0</span>
-          </button>
-          <button type="button" id="cafe25-claim-btn" class="pill-btn glass-surface">
-            ☕ 나눔 커피 마시기 (<span id="shared-coffee-count">2</span>잔)
-          </button>
-          <button type="button" id="camera-reset-btn" class="pill-btn glass-surface" title="시점 초기화">
-            🎥 시점 맞춤
-          </button>
-        </div>
-
-        <nav class="game-modes glass-surface" aria-label="산사 수행 제어 바">
-          <button type="button" id="btn-hello" class="mode-btn" data-key="3">
-            <span class="mode-icon">🙏</span>
-            <span class="mode-label">합장 인사</span>
-            <kbd class="mode-key">3</kbd>
-          </button>
-          <button type="button" id="btn-bow" class="mode-btn" data-key="1" aria-pressed="false">
-            <span class="mode-icon">🙇</span>
-            <span class="mode-label">절하기</span>
-            <kbd class="mode-key">1 / Space</kbd>
-          </button>
-          <button type="button" id="btn-beads" class="mode-btn" data-key="2" aria-pressed="false">
-            <span class="mode-icon">📿</span>
-            <span class="mode-label">염주 돌리기</span>
-            <kbd class="mode-key">2</kbd>
-          </button>
-          <button type="button" id="btn-moktak" class="mode-btn" data-key="5" aria-pressed="false">
-            <span class="mode-icon">🪵</span>
-            <span class="mode-label">목탁 열기</span>
-            <kbd class="mode-key">5</kbd>
-          </button>
-          <button type="button" id="btn-sit" class="mode-btn" data-key="4" aria-pressed="false">
-            <span class="mode-icon">🧘</span>
-            <span class="mode-label" id="sit-btn-label">좌복 앉기</span>
-            <kbd class="mode-key">4</kbd>
-          </button>
-        </nav>
-      </div>
-    </div>
-
-    <!-- 7. 모달 1: 100개 서버(룸) 선택 바텀 시트 (<dialog closedby="any">) -->
-    <dialog id="server-picker-dialog" class="bottom-sheet" closedby="any" aria-labelledby="server-picker-title">
-      <div class="sheet-handle" aria-hidden="true"></div>
-      <div class="sheet-header">
-        <div>
-          <span class="overlay-kicker">실시간 멀티버스 · 최대 100개 서버 (정원 100명)</span>
-          <h2 id="server-picker-title" class="sheet-title">머무를 산사 마루 선택</h2>
-        </div>
-        <form method="dialog">
-          <button type="submit" class="icon-btn" aria-label="서버 목록 닫기">✕</button>
-        </form>
-      </div>
-      <div id="server-grid" class="server-grid"></div>
-    </dialog>
-
-    <!-- 8. 모달 2: CAFE25 × 산사 커피 공양 바텀 시트 -->
-    <dialog id="cafe25-dialog" class="bottom-sheet" closedby="any" aria-labelledby="cafe25-title">
-      <div class="sheet-handle" aria-hidden="true"></div>
-      <div class="sheet-header">
-        <div>
-          <span class="overlay-kicker">CAFE25 × 산사 협업 공양소</span>
-          <h2 id="cafe25-title" class="sheet-title">산사 다실 — 커피 한 잔의 마음</h2>
-        </div>
-        <form method="dialog">
-          <button type="submit" class="icon-btn" aria-label="CAFE25 닫기">✕</button>
-        </form>
-      </div>
-
-      <div class="cafe-tabs" role="tablist">
-        <button type="button" class="cafe-tab active" data-cafe-tab="gift" role="tab" aria-selected="true">
-          1. 무소유 (나눔 선물)
-        </button>
-        <button type="button" class="cafe-tab" data-cafe-tab="practice" role="tab" aria-selected="false">
-          2. 풀소유 (25배 수행)
-        </button>
-        <button type="button" class="cafe-tab" data-cafe-tab="delivery" role="tab" aria-selected="false">
-          3. 배달 (안부 카드)
-        </button>
-      </div>
-
-      <!-- 탭 1: 무소유 -->
-      <div class="cafe-panel" id="cafe-panel-gift">
-        <p class="sheet-desc">
-          내가 마시지 않고, 지금 산사에 머무는 다른 수행자를 위해 따뜻한 핸드드립 커피를 내려 나눔 탁자에 올려둡니다.
-        </p>
-        <label class="field-label" for="cafe-gift-note">함께 남길 짧은 마음 (선택)</label>
-        <input type="text" id="cafe-gift-note" class="text-input" maxlength="60" placeholder="산사에 머무는 모든 분들께 평안이 깃들기를 바랍니다." />
-        <div class="sheet-actions">
-          <button type="button" id="cafe-brew-gift-btn" class="pill-btn primary full-width">
-            ☕ 무소유 커피 내려서 나눔 탁자에 올리기
-          </button>
-        </div>
-      </div>
-
-      <!-- 탭 2: 풀소유 (25배 수행) -->
-      <div class="cafe-panel" id="cafe-panel-practice" hidden>
-        <p class="sheet-desc">
-          나를 위한 커피 한 잔입니다. 법당이나 마당에서 <strong>25배 절하기 수행</strong>을 마치면 직접 내려 마실 수 있으며,
-          마신 뒤 <strong>5분(300,000ms) 동안 따뜻한 온기 오라와 이동 속도 1.2배 버프</strong>가 부여됩니다.
-        </p>
-        <div class="quest-box">
-          <span>현재 풀소유 절 수행 진척도</span>
-          <strong id="cafe-bow25-status">0 / 25배</strong>
-        </div>
-        <div class="sheet-actions">
-          <button type="button" id="cafe-start-bow25-btn" class="pill-btn primary full-width">
-            🙇 25배 절하기 수행 시작 / 풀소유 커피 마시기
-          </button>
-        </div>
-      </div>
-
-      <!-- 탭 3: 배달 (커피 카드 생성) -->
-      <div class="cafe-panel" id="cafe-panel-delivery" hidden>
-        <p class="sheet-desc">
-          산사 밖에 있는 소중한 사람에게 따뜻한 커피 일러스트와 안부 문구가 담긴 엽서 이미지를 만들어 저장합니다.
-        </p>
-        <label class="field-label" for="cafe-card-to">받는 사람</label>
-        <input type="text" id="cafe-card-to" class="text-input" maxlength="30" placeholder="소중한 벗에게" />
-        <label class="field-label" for="cafe-card-msg">전하고 싶은 안부</label>
-        <input type="text" id="cafe-card-msg" class="text-input" maxlength="60" placeholder="오늘 하루도 고생 많았어요. 산사에서 따뜻한 커피 한 잔 보냅니다." />
-        <canvas id="cafe-postcard-canvas" class="postcard-canvas" width="480" height="260"></canvas>
-        <div class="sheet-actions">
-          <button type="button" id="cafe-download-card-btn" class="pill-btn primary full-width">
-            💌 커피 안부 카드 이미지 저장하기
-          </button>
-        </div>
-      </div>
-    </dialog>
-
-    <!-- 9. 모달 3: 복전함 (공양하기 — 1,000단위 콤마 실시간 포맷팅 적용) -->
-    <dialog id="support-dialog" class="bottom-sheet" closedby="any" aria-labelledby="support-title">
-      <div class="sheet-handle" aria-hidden="true"></div>
-      <div class="sheet-header">
-        <div>
-          <span class="overlay-kicker">불단 복전함 · 시주 및 후원 안내</span>
-          <h2 id="support-title" class="sheet-title">산사 복전함 (공양하기)</h2>
-        </div>
-        <form method="dialog">
-          <button type="submit" class="icon-btn" aria-label="복전함 닫기">✕</button>
-        </form>
-      </div>
-      <p class="sheet-desc">
-        산사가 언제나 광고 없이 고요한 쉼터로 유지될 수 있도록 마음을 보태어 주실 수 있습니다.
-      </p>
-      <div class="preset-amounts">
-        <button type="button" class="pill-btn amount-preset" data-amount="3000">3,000원</button>
-        <button type="button" class="pill-btn amount-preset" data-amount="5000">5,000원</button>
-        <button type="button" class="pill-btn amount-preset active" data-amount="10000">10,000원</button>
-        <button type="button" class="pill-btn amount-preset" data-amount="30000">30,000원</button>
-      </div>
-      <label class="field-label" for="donation-amount-input">공양 금액 (원 · 천 단위 콤마 자동 적용)</label>
-      <input type="text" inputmode="numeric" id="donation-amount-input" class="text-input" value="10,000" />
-      <label class="field-label" for="donation-wish-input">발원문 / 소원 한 줄</label>
-      <input type="text" id="donation-wish-input" class="text-input" maxlength="60" placeholder="가족 모두 건강하고 마음에 평화가 깃들기를 발원합니다." />
-      <div class="quest-box">
-        <span>누적 공양 발원 합계</span>
-        <strong id="total-donation-display">0원</strong>
-      </div>
-      <div class="sheet-actions">
-        <button type="button" id="submit-donation-btn" class="pill-btn primary full-width">
-          🪷 복전함에 마음 올리기
-        </button>
-      </div>
-    </dialog>
-
-    <!-- 10. 모달 4: 삼존불 및 설강화 작품 안내 -->
-    <dialog id="artwork-dialog" class="bottom-sheet" closedby="any" aria-labelledby="artwork-title">
-      <div class="sheet-handle" aria-hidden="true"></div>
-      <div class="sheet-header">
-        <div>
-          <span class="overlay-kicker">청연당 법당 & 마당 예술 안내</span>
-          <h2 id="artwork-title" class="sheet-title">아미타삼존불 & 『설강화』</h2>
-        </div>
-        <form method="dialog">
-          <button type="submit" class="icon-btn" aria-label="안내 닫기">✕</button>
-        </form>
-      </div>
-      <div class="guide-grid">
-        <div class="guide-card">
-          <h3>🏯 청연당 아미타삼존불</h3>
-          <p>
-            법당 중앙의 <strong>본존 아미타불</strong>(고려 불화 『수월관음도』 금니 문양 모티프)을 중심으로,
-            좌협시 <strong>관세음보살</strong>(자비)과 우협시 <strong>대세지보살</strong>(지혜)을 모셨습니다.
-          </p>
-        </div>
-        <div class="guide-card">
-          <h3>🌱 마당 『설강화 (Snowdrop)』 & 공양이</h3>
-          <p>
-            차가운 눈 속에서도 가장 먼저 피어나는 설강화의 희망과, 연못가를 거니는 사찰 고양이 <strong>'공양이'</strong>를 통해
-            말없는 위로와 쉼을 전합니다.
-          </p>
-        </div>
-        <div class="guide-card">
-          <h3>⌨️ 조작 안내</h3>
-          <p>
-            • <strong>이동</strong>: 바닥 클릭/터치 또는 <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> / 방향키<br />
-            • <strong>시점 회전</strong>: 화면 드래그 · <strong>줌</strong>: 마우스 휠 / 핀치<br />
-            • <strong>수행 단축키</strong>: <kbd>1</kbd>/<kbd>Space</kbd> 절하기 · <kbd>2</kbd> 108염주 · <kbd>3</kbd> 합장 · <kbd>4</kbd> 좌복 앉기 · <kbd>5</kbd> 목탁
-          </p>
-        </div>
-      </div>
-    </dialog>
-  </div>
-
-  <script type="module" src="/static/app.js"></script>
+<div id="app">
+  <main id="sansa-boot" class="sansa-boot" role="status" aria-label="산사">
+    <span class="sansa-boot-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M2 11c5-1 8-4 10-7 2 3 5 6 10 7M4 12h16M7 13v7m10-7v7M4 20h16M10 15h4v5"/></svg></span>
+    <h1 id="sansa-boot-title">산사</h1>
+    <p id="sansa-boot-message">법당을 여는 중</p>
+    <span class="sansa-boot-dot" aria-hidden="true"></span>
+    <a class="sansa-boot-retry" href="">다시 들어가기</a>
+  </main>
+</div>
+<noscript><style>.sansa-boot{display:none}body{background:#20251f}</style><main style="padding:3rem;max-width:36rem;margin:auto;color:#f5f1e8;font-family:sans-serif;line-height:1.8"><h1>산사 · 온라인 절</h1><p>염주를 굴리고, 절하고, 잠깐 쉬어가는 공간입니다.</p><p>법당을 둘러보려면 브라우저의 JavaScript를 켜주세요.</p></main></noscript>
 </body>
 </html>

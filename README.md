@@ -79,14 +79,21 @@ flowchart TB
 
 ---
 
-## 🚀 4. 실행 가능한 3D 웹 앱 구동 가이드 (Port `8860`)
+## 🚀 4. 실행 가능한 3D 웹 앱 구동 가이드 (Port `8860` · 듀얼 엔진 지원)
 
-역공학 분석 명세(`docs/01`~`04`)에 기반하여 구현된 **독립형 3D 온라인 산사 멀티버스 웹 애플리케이션**입니다.
+역공학 분석 명세(`docs/01`~`04`)에 기반하여 구현된 **독립형 3D 온라인 산사 멀티버스 웹 애플리케이션**이며, `server_manager`(Port `9999`) 통합 관제 대시보드에 등록되어 원클릭 제어 및 실시간 로그 스트리밍을 지원합니다.
 
-### 4.1 주요 소스 파일
-* [`main.py`](file:///Users/bigstone/My_SideProject/Online_Multiverse/main.py): FastAPI 멀티룸(`maru` ~ `maru-100`, 방당 정원 `100`명) 서버, `/presence` WebSocket 엔드포인트, `SNSD`(`0x534E5344`) 28B 헤더 + 30/38B 바이너리 델타 패킷 인코더/디코더 및 `--self-check` 검증기.
+### 4.1 듀얼 프론트엔드 라우트 (`/` 원본 100% 엔진 & `/clean` 모듈형 클린 엔진)
+* **`GET /` ([`static/index.html`](file:///Users/bigstone/My_SideProject/online_multiverse/static/index.html) + [`static/assets/game-CLKObOjK.js`](file:///Users/bigstone/My_SideProject/online_multiverse/static/assets/game-CLKObOjK.js) + [`static/assets/presence-worker-C2UpTq6Q.js`](file:///Users/bigstone/My_SideProject/online_multiverse/static/assets/presence-worker-C2UpTq6Q.js))**:
+  - 원본 `sansatemple.com`의 `1.42MB` 프로덕션 3D 월드 엔진을 로컬 FastAPI 백엔드([`main.py`](file:///Users/bigstone/My_SideProject/online_multiverse/main.py))와 100% 직결한 모드입니다.
+  - 청연당(`堂緣淸`) 다포식 공포·서까래·한지 창호, 대나무 숲·단풍나무·은행나무 바람 버텍스 셰이더, 연못·오리·수련·다실(CAFE25) 내부 가구, A* 자동 길찾기(`Gd`/`WR`), 공양미 시주 금액 실시간 `1,000`원 단위 콤마 포맷팅 입력창까지 원본과 픽셀 단위로 100% 동일하게 동작합니다.
+* **`GET /clean` ([`static/clean.html`](file:///Users/bigstone/My_SideProject/online_multiverse/static/clean.html) + [`static/app.js`](file:///Users/bigstone/My_SideProject/online_multiverse/static/app.js) + [`static/style.css`](file:///Users/bigstone/My_SideProject/online_multiverse/static/style.css))**:
+  - 커스터마이징과 확장이 용이하도록 가독성 높은 클린 ES Module(`~2,920`줄)로 재구성한 **Three.js r180 + `GLTFLoader` + `MeshoptDecoder` + `SkeletonUtils`** 3D 렌더러 모드입니다.
+
+### 4.2 주요 소스 파일 및 3D 에셋
+* [`main.py`](file:///Users/bigstone/My_SideProject/online_multiverse/main.py): FastAPI 멀티룸(`maru` ~ `maru-100`, 방당 정원 `50`/`100`명) 서버, `/presence` WebSocket 엔드포인트, Big-Endian `SNS3`(`0x534E5333`, `1397642035`) 28B 헤더 + 30/38B 바이너리 델타 패킷 인코더/디코더 및 `--self-check` 검증기.
 * [`static/presence-worker.js`](file:///Users/bigstone/My_SideProject/Online_Multiverse/static/presence-worker.js): 지수 백오프 재연결 및 Zero-copy `Transferable` `ArrayBuffer` 브릿지 워커.
-* [`static/index.html`](file:///Users/bigstone/My_SideProject/Online_Multiverse/static/index.html) & [`static/style.css`](file:///Users/bigstone/My_SideProject/Online_Multiverse/static/style.css): Apple HIG 모바일 퍼스트 Thumb-Zone 하단 수행 바, $\ge 44\text{pt}$ 터치 타깃, `<dialog closedby="any">` 바텀 시트 모달(100개 서버 선택, CAFE25, 복전함 `1,000` 단위 콤마 포맷팅).
+* [`static/clean.html`](file:///Users/bigstone/My_SideProject/Online_Multiverse/static/clean.html) & [`static/style.css`](file:///Users/bigstone/My_SideProject/Online_Multiverse/static/style.css): Apple HIG 모바일 퍼스트 Thumb-Zone 하단 수행 바, $\ge 44\text{pt}$ 터치 타깃, `<dialog closedby="any">` 바텀 시트 모달(100개 서버 선택, CAFE25, 복전함 `1,000` 단위 콤마 포맷팅).
 * [`static/app.js`](file:///Users/bigstone/My_SideProject/Online_Multiverse/static/app.js): **Three.js r180 + `GLTFLoader` + `MeshoptDecoder` + `SkeletonUtils`** 기반 3D 렌더링 엔진.
   - **6종의 실제 스컬프팅 `.glb` 3D 모델(`EXT_meshopt_compression` & `KHR_mesh_quantization`)**:
     - 동자승 아바타([`static/assets/monk.glb`](file:///Users/bigstone/My_SideProject/Online_Multiverse/static/assets/monk.glb)): 17개 본(`hips`, `spine`, `chest`, `neck`, `head`, `upper_arm.L/R`, `forearm.L/R`, `hand.L/R`, `thigh.L/R`, `shin.L/R`, `foot.L/R`) + 2-Bone IK 합장/절 솔버 + 4종 승복 주름 모프 타깃(`restingFold`, `prayerCloth`, `bowCloth`, `kneelingCover`) 구동.
@@ -97,9 +104,9 @@ flowchart TB
     - [`woodland.jpg`](file:///Users/bigstone/My_SideProject/Online_Multiverse/static/assets/environment/woodland.jpg) Equirectangular IBL 환경 반사맵, 후불탱화([`altar-wall-calm-20261102.jpg`](file:///Users/bigstone/My_SideProject/Online_Multiverse/static/assets/altar-wall-calm-20261102.jpg)), CAFE25 설강화 원화([`snowdrop-artwork.webp`](file:///Users/bigstone/My_SideProject/Online_Multiverse/static/assets/cafe25-v12/snowdrop-artwork.webp)).
   - **6대 수행 & 절차적 사운드**: 합장, `4.8초` 절 사이클, 108염주 캔버스, 108 BPM 목탁, 헌향, CAFE25(무소유/풀소유 25배 속도 `1.2x` 버프/배달 엽서), **Web Audio API 절차적 사운드 합성기(`SoundEngine`)**, 적응형 프레임 페이서(`60/30/15 FPS`), 멀티 탭 `BroadcastChannel` 락.
 
-### 4.2 서버 실행 및 자체 검증 명령어
+### 4.3 서버 실행 및 자체 검증 명령어
 ```bash
-# 1. SNSD 바이너리 프로토콜 및 100개 룸 무결성 셀프 체크
+# 1. SNS3 바이너리 프로토콜 및 100개 룸 무결성 셀프 체크
 ./.venv/bin/python main.py --self-check
 
 # 2. 서버 기동 (기본 포트: 8860)
@@ -107,8 +114,9 @@ flowchart TB
 # 또는
 ./.venv/bin/python main.py 8860
 ```
-* **웹 접속**: `http://localhost:8860`
-* **상태 확인 API**: `GET http://localhost:8860/api/health`, `GET http://localhost:8860/api/rooms?roomLimit=100`
+* **원본 100% 3D 엔진 접속**: `http://localhost:8860/`
+* **모듈형 클린 3D 엔진 접속**: `http://localhost:8860/clean`
+* **상태 확인 API**: `GET http://localhost:8860/api/health`, `GET http://localhost:8860/api/rooms?roomLimit=20`
 
 ---
 
