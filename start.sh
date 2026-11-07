@@ -5,7 +5,11 @@ PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PORT="${1:-8860}"
 PYTHON_BIN="$PROJECT_DIR/.venv/bin/python"
 if [ ! -x "$PYTHON_BIN" ]; then
-  PYTHON_BIN="python3"
+  if [ -x "$PROJECT_DIR/../server_manager/venv/bin/python" ]; then
+    PYTHON_BIN="$PROJECT_DIR/../server_manager/venv/bin/python"
+  else
+    PYTHON_BIN="python3"
+  fi
 fi
 
 LAN_IP=$(ipconfig getifaddr en0 2>/dev/null || ipconfig getifaddr en1 2>/dev/null || echo "127.0.0.1")
